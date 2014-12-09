@@ -42,4 +42,14 @@ public class Address {
     private String city;
     private String home;
     private String flat;
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
