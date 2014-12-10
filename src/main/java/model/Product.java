@@ -2,6 +2,7 @@ package model;
 
 
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Comparator;
 
@@ -10,6 +11,7 @@ public class Product implements Comparator<Product>{
     private String name;
     private int active;
     private Date insertDate;
+    private BigDecimal price;
 
     @Override
     public String toString() {
