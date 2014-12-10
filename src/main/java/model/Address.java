@@ -1,8 +1,6 @@
 package model;
 
-/**
- * Created by 1 on 09.12.2014.
- */
+
 public class Address {
     private long id;
 
