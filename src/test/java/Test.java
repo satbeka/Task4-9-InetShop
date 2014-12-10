@@ -15,10 +15,12 @@ public class Test {
 
         Connection connection=ConnectorDb.getConnection();
         DatabaseMetaData databaseMetaData=connection.getMetaData();
-        System.out.println(databaseMetaData.getDatabaseProductName()+" "+
+        System.out.println("Db="+databaseMetaData.getDatabaseProductName()+" "+
         databaseMetaData.getDriverVersion()
         );
 
+
+        
 
 
     }
