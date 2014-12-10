@@ -15,7 +15,13 @@ public class Order implements Serializable {
     private BigDecimal sumPaid;
     private Date date;
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
-
-
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
