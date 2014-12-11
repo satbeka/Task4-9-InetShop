@@ -1,8 +1,12 @@
 package dao.factory;
 
+import dao.ConnectionException;
 import dBase.ConnectorDb;
+import dao.address.AddressDAO;
+import dao.administrator.AdministratorDAO;
 import dao.client.ClientDAO;
 import dao.order.OrderDAO;
+import dao.product.ProductDAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -19,24 +23,61 @@ public class H2DAOFactory extends DAOFactory {
         MYSQLDAOFactory.pool = pool;
   */
 
-        // method to create Cloudscape connections
-    public static Connection createConnection() throws SQLException {
-        // Use DRIVER and DBURL to create a connection
+        // method to create connections
+    public static synchronized Connection createConnection() throws SQLException {
         // Recommend connection pool implementation/usage
 
         Connection connection=ConnectorDb.getConnection();
+        return connection;
     }
-    public ClientDAO getClientDAO() {
-        // CloudscapeCustomerDAO implements CustomerDAO
-        return new H2ClientDAO();
+
+    @Override
+    public AdministratorDAO getAdministratorDAO() throws ConnectionException {
+        try {
+            Connection con = createConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    public AccountDAO getAccountDAO() {
-        // CloudscapeAccountDAO implements AccountDAO
-        return new CloudscapeAccountDAO();
+
+    public ClientDAO getClientDAO() throws ConnectionException {
+        try {
+            Connection con = createConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    public OrderDAO getOrderDAO() {
-        // CloudscapeOrderDAO implements OrderDAO
-        return new CloudscapeOrderDAO();
+
+    @Override
+    public OrderDAO getOrderDAO() throws ConnectionException {
+        try {
+            Connection con = createConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-    ...
+
+    @Override
+    public ProductDAO getProductDAO()throws ConnectionException {
+        try {
+            Connection con = createConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public AddressDAO getAddressDAO()throws ConnectionException {
+        try {
+            Connection con = createConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

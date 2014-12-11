@@ -1,10 +1,13 @@
 package dao.factory;
 
+import dao.ConnectionException;
 import dao.address.AddressDAO;
 import dao.administrator.AdministratorDAO;
 import dao.client.ClientDAO;
 import dao.order.OrderDAO;
 import dao.product.ProductDAO;
+
+import java.sql.SQLException;
 
 public abstract class DAOFactory {
 
@@ -17,12 +20,15 @@ public abstract class DAOFactory {
     // There will be a method for each DAO that can be
     // created. The concrete factories will have to
     // implement these methods.
-    public abstract AdministratorDAO getAdministratorDAO();
-    public abstract ClientDAO getClientDAO();
-    public abstract OrderDAO getOrderDAO();
-    public abstract ProductDAO getProductDAO();
-    public abstract AddressDAO getAddressDAO();
+    public abstract AdministratorDAO getAdministratorDAO() throws ConnectionException;
 
+    public abstract ClientDAO getClientDAO() throws ConnectionException;
+
+    public abstract OrderDAO getOrderDAO() throws ConnectionException;
+
+    public abstract ProductDAO getProductDAO() throws ConnectionException;
+
+    public abstract AddressDAO getAddressDAO() throws ConnectionException;
 
 
     public static DAOFactory getDAOFactory(
@@ -31,12 +37,12 @@ public abstract class DAOFactory {
         switch (whichFactory) {
             case H2:
                 return new H2DAOFactory();
-            case ORACLE    :
+            case ORACLE:
                 return new OracleDAOFactory();
-            case SYBASE    :
+            case SYBASE:
                 return new SybaseDAOFactory();
 
-            default           :
+            default:
                 return null;
         }
     }

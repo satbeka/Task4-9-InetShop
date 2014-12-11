@@ -17,10 +17,7 @@ public class ConnectorDb {
         String user = resource.getString("user");
         String pass = resource.getString("password");
         Locale.setDefault(current);
-
-
         return DriverManager.getConnection(url, user, pass);
-
 
     }
 }
