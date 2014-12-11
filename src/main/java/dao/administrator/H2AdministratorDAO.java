@@ -3,10 +3,7 @@ package dao.administrator;
 import model.Administrator;
 
 import javax.sql.RowSet;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 
@@ -22,6 +19,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
     @Override
     public int insertAdministrator(Administrator administrator) {
 
+        String SqlSeqID="select seq_id.nextval;";
         String SqlInsert1="insert into table USER(id,name,role,address,login,password,inn," +
                 "birh_day,blacklist,insert_date) values ";
         String SqlInsert2="("+    +")";
@@ -33,7 +31,24 @@ public class H2AdministratorDAO implements AdministratorDAO {
             e.printStackTrace();
         }
 
-        Statement st = cn.createStatement();
+        Statement st = null;
+        try {
+            st = cn.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ResultSet rs = null;
+        try {
+            rs=st.executeQuery(SqlSeqID);
+            long id=rs.getLong(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         int rows = st.executeUpdate("INSERT INTO Employees " +
                 "(FirstName, LastName) VALUES " + "(‘Игорь’, ‘Цветков’)");
 // Устанавливаем именнованную точку сохранения.
