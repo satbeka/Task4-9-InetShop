@@ -5,7 +5,6 @@ public class Address {
     private long id;
 
     public long getId() {
-        id=Id.nextId("ADDRESS");
         return id;
     }
 

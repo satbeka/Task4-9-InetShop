@@ -6,16 +6,25 @@ import java.util.Enumeration;
 
 public abstract class User {
 
-   private long id;
-   private String name;
+    private long id;
+    private String name;
     public enum Role { ADMINISTRATOR, CLIENT, ALIEN };
     private Address address;
     private String login;
     private String password;
     private String inn;
     private Date birthDay;
+    private Date insertDate;
     //int blacklist;
 
+
+    public Date getInsertDate() {
+        return insertDate;
+    }
+
+    public void setInsertDate(Date insertDate) {
+        this.insertDate = insertDate;
+    }
 
     public long getId() {
         return id;
