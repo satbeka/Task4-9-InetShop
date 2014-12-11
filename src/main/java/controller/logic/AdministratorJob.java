@@ -1,5 +1,8 @@
-package model;
+package controller.logic;
 
+
+import model.Client;
+import model.Product;
 
 public interface AdministratorJob {
 

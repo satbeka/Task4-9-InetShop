@@ -1,5 +1,7 @@
-package model;
+package controller.logic;
 
+
+import model.Order;
 
 public interface ClientJob {
 
