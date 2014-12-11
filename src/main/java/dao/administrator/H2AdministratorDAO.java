@@ -17,12 +17,11 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
 
     @Override
-    public int insertAdministrator(Administrator administrator) {
+    public long insertAdministrator(Administrator administrator) {
 
         String SqlSeqID="select seq_id.nextval;";
         String SqlInsert1="insert into table USER(id,name,role,address,login,password,inn," +
                 "birh_day,blacklist,insert_date) values ";
-        String SqlInsert2="("+    +")";
 
         Connection cn=this.connection;
         try {
@@ -39,33 +38,35 @@ public class H2AdministratorDAO implements AdministratorDAO {
         }
 
         ResultSet rs = null;
+        long id = -1;
         try {
             rs=st.executeQuery(SqlSeqID);
-            long id=rs.getLong(1);
+            id=rs.getLong(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        String SqlInsert2="("+id;
 
+        SqlInsert2=SqlInsert2+","+administrator.getName()+","+administrator.getAddress().getId()
+                +","+administrator.getLogin()+","+administrator.getPassword()+","+administrator.getInn();
+        String dt="TO_DATE("+administrator.getBirthDay().toString()+",'YYYY-MM-DD HH24:MI:SS')";
+        SqlInsert2=SqlInsert2+","+dt+","+"0";
+        dt="TO_DATE("+administrator.getInsertDate().toString()+",'YYYY-MM-DD HH24:MI:SS')";
+        SqlInsert2=SqlInsert2+","+dt+");";
+        SqlInsert1=SqlInsert1+SqlInsert2;
 
-
-
-        int rows = st.executeUpdate("INSERT INTO Employees " +
-                "(FirstName, LastName) VALUES " + "(‘Игорь’, ‘Цветков’)");
-// Устанавливаем именнованную точку сохранения.
-        Savepoint svpt = cn.setSavepoint("NewEmp");
-
-// ...
-        rows = st.executeUpdate("UPDATE Employees
-                set Address = ‘ул. Седых, 19-34' " +
-        "WHERE LastName = 'Цветков'");
-
-// ...
-        cn.rollback(svpt);
-// ...
-// Запись о работнике вставлена, но адрес не обновлен.
-        conn.commit();
-
-
+        int rows = 0;
+        try {
+            rows = st.executeUpdate(SqlInsert1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            cn.commit();
+            return id;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         return -1;
