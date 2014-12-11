@@ -4,6 +4,7 @@ import dao.ConnectionException;
 import dBase.ConnectorDb;
 import dao.address.AddressDAO;
 import dao.administrator.AdministratorDAO;
+import dao.administrator.H2AdministratorDAO;
 import dao.client.ClientDAO;
 import dao.order.OrderDAO;
 import dao.product.ProductDAO;
@@ -35,6 +36,7 @@ public class H2DAOFactory extends DAOFactory {
     public AdministratorDAO getAdministratorDAO() throws ConnectionException {
         try {
             Connection con = createConnection();
+            return new H2AdministratorDAO(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
