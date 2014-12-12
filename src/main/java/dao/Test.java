@@ -5,6 +5,12 @@ import dao.administrator.AdministratorDAO;
 import dao.factory.DAOFactory;
 import model.Administrator;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 public class Test {
 
     public static void main(String[] args) throws ConnectionException{
@@ -23,20 +29,34 @@ public class Test {
         administrator.setLogin("admin");
         administrator.setPassword("admin");
         administrator.setInn("1111111111");
-        administrator.setInsertDate("");
+        Date sysDate = new Date();
+        administrator.setInsertDate((java.sql.Date) sysDate);
 
-        int newAdministratorId = administratorDAO.insertAdministrator();
+        long newAdministratorId = administratorDAO.insertAdministrator(administrator);
+        administrator.setId(newAdministratorId);
 
         // Find a customer object. Get the Transfer Object.
-        Customer cust = custDAO.findCustomer(...);
+        Administrator administrator22 = administratorDAO.findAdministratorByName("admin");
 
-// modify the values in the Transfer Object.
-        cust.setAddress(...);
-        cust.setEmail(...);
-// update the customer object using the DAO
-        custDAO.updateCustomer(cust);
+        // modify the values in the Transfer Object.
 
-// delete a customer object
+        //String string = "01.01.1980";
+        SimpleDateFormat format = new SimpleDateFormat("dd.mm.yyyy");
+        try {
+            Date birthDay= format.parse("01.01.1980");
+            administrator22.setBirthDay((java.sql.Date) birthDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        administrator22.setLogin("admin22");
+
+        // update the customer object using the DAO
+        administratorDAO.updateAdministrator(administrator22);
+
+
+
+        /*
+        // delete a customer object
         custDAO.deleteCustomer(...);
         // select all customers in the same city
         Customer criteria=new Customer();
@@ -46,7 +66,7 @@ public class Test {
 // returns customersList - collection of Customer
 // Transfer Objects. iterate through this collection to
 // get values.
-
+*/
 
 
     }
