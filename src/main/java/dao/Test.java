@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class Test {
 
-    public static void main(String[] args) throws ConnectionException{
+    public static void main(String[] args) {
 
 
         DAOFactory h2Factory =
@@ -21,7 +21,12 @@ public class Test {
 
         // Create a DAO
         AdministratorDAO administratorDAO =
-                h2Factory.getAdministratorDAO();
+                null;
+        try {
+            administratorDAO = h2Factory.getAdministratorDAO();
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        }
 
         // create a new admin
         Administrator administrator=new Administrator();
@@ -30,7 +35,7 @@ public class Test {
         administrator.setPassword("admin");
         administrator.setInn("1111111111");
         Date sysDate = new Date();
-        administrator.setInsertDate((java.sql.Date) sysDate);
+        administrator.setInsertDate(sysDate);
 
         long newAdministratorId = administratorDAO.insertAdministrator(administrator);
         administrator.setId(newAdministratorId);

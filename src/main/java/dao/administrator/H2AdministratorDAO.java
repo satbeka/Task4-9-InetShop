@@ -4,6 +4,7 @@ import model.Administrator;
 
 import javax.sql.RowSet;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -19,9 +20,9 @@ public class H2AdministratorDAO implements AdministratorDAO {
     @Override
     public long insertAdministrator(Administrator administrator) {
 
-        String SqlSeqID="select seq_id.nextval;";
-        String SqlInsert1="insert into table USER(id,name,role,address,login,password,inn," +
-                "birh_day,blacklist,insert_date) values ";
+        String SqlSeqID="select seq_id.nextval from dual;";
+        String SqlInsert1="insert into USER(id,name,role,address,login,password,inn," +
+                "birth_day,blacklist,insert_date) values ";
 
         Connection cn=this.connection;
         try {
@@ -41,17 +42,37 @@ public class H2AdministratorDAO implements AdministratorDAO {
         long id = -1;
         try {
             rs=st.executeQuery(SqlSeqID);
-            id=rs.getLong(1);
+            if ( rs.next() ) {
+                id=rs.getLong(1);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         String SqlInsert2="("+id;
 
-        SqlInsert2=SqlInsert2+","+administrator.getName()+","+administrator.getAddress().getId()
+        long addressId= 0;
+        try {
+            addressId=administrator.getAddress().getId();
+        } catch (Exception e) {
+            addressId=0;
+        }
+
+
+        SqlInsert2=SqlInsert2+","+administrator.getName()+","+addressId
                 +","+administrator.getLogin()+","+administrator.getPassword()+","+administrator.getInn();
-        String dt="TO_DATE("+administrator.getBirthDay().toString()+",'YYYY-MM-DD HH24:MI:SS')";
+        String dt;
+        try {
+            dt="TO_DATE("+administrator.getBirthDay().toString()+",'yyyy-MM-dd HH:mm:ss')";
+        } catch (Exception e) {
+            dt=null;
+        }
+
+
         SqlInsert2=SqlInsert2+","+dt+","+"0";
-        dt="TO_DATE("+administrator.getInsertDate().toString()+",'YYYY-MM-DD HH24:MI:SS')";
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dt = sdfDate.format(administrator.getInsertDate());
+        dt="parsedatetime("+dt+",'yyyy-MM-dd HH:mm:ss')";
         SqlInsert2=SqlInsert2+","+dt+");";
         SqlInsert1=SqlInsert1+SqlInsert2;
 
