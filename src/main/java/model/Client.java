@@ -1,5 +1,7 @@
 package model;
 
+import dao.client.H2ClientDAO;
+
 import java.io.Serializable;
 
 
@@ -14,5 +16,6 @@ public class Client extends User implements Serializable{
 
     public void setBlackList(Integer blackList) {
         this.blackList = blackList;
+        //H2ClientDAO h2ClientDAO=new H2ClientDAO()
     }
 }
