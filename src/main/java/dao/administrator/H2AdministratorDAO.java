@@ -163,6 +163,8 @@ public class H2AdministratorDAO implements AdministratorDAO {
             administrator.setId(rs.getLong(1));
             administrator.setName(rs.getString(2));
             administrator.setBirthDay(rs.getDate(8));
+            administrator.setInn(rs.getString(7));
+            administrator.setPassword(rs.getString(6));
             return administrator;
 
         } catch (SQLException e) {
@@ -182,7 +184,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
         PreparedStatement st = null;
         try {
             st = cn.prepareStatement("select * from user where id =?;");
-            st.setLong(1,id);
+            st.setLong(1, id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -213,8 +215,81 @@ public class H2AdministratorDAO implements AdministratorDAO {
     @Override
     public boolean updateAdministrator(Administrator administrator) {
 
+        //String SqlSeqID="select seq_id.nextval from dual;";
+        String SqlUpd="update USER set name=?,address=?,login=?,password=?" +
+                ",inn=?,birth_day=? where Id=?";
 
+        Connection cn=this.connection;
+        try {
+            cn.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        PreparedStatement st=null;
+        try {
+            st=cn.prepareStatement(SqlUpd);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            st.setLong(7,administrator.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            st.setString(1, administrator.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            st.setLong(2,administrator.getAddress().getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e){
+            try {
+                st.setNull(2,Types.INTEGER);
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+        try {
+            st.setString(3, administrator.getLogin());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st.setString(4, administrator.getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st.setString(5, administrator.getInn());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st.setDate(6, administrator.getBirthDay());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            int countRows = st.executeUpdate();
+            if (countRows==0){return false;}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            cn.commit();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         return false;
