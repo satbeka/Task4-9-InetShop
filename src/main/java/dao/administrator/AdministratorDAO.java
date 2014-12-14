@@ -12,6 +12,7 @@ public interface AdministratorDAO {
     public boolean deleteAdministrator(Administrator administrator);
     public Administrator findAdministratorByName(String name);
     public Administrator findAdministratorById(long id);
+    public Administrator findFirstAdministratorByName(String name);
     public boolean updateAdministrator(Administrator administrator);
     public RowSet selectAdministratorRS(Administrator administrator);
     public List<Administrator> selectAdministratorTO();

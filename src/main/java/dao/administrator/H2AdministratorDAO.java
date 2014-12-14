@@ -20,6 +20,11 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
 
     @Override
+    public Administrator findAdministratorByName(String name) {
+        return null;
+    }
+
+    @Override
     public long insertAdministrator(Administrator administrator) {
 
         String SqlSeqID="select seq_id.nextval from dual;";
@@ -139,7 +144,32 @@ public class H2AdministratorDAO implements AdministratorDAO {
     }
 
     @Override
-    public Administrator findAdministratorByName(String name) {
+    public Administrator findFirstAdministratorByName(String name) {
+        Administrator administrator=new Administrator();
+        Connection cn=this.connection;
+
+        PreparedStatement st = null;
+        try {
+            st = cn.prepareStatement("select * from user where name =?;");
+            st.setString(1,name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ResultSet rs = null;
+        try {
+            rs=st.executeQuery();
+            rs.next();
+            administrator.setId(rs.getLong(1));
+            administrator.setName(rs.getString(2));
+            administrator.setBirthDay(rs.getDate(8));
+            return administrator;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 
@@ -150,6 +180,11 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
     @Override
     public boolean updateAdministrator(Administrator administrator) {
+
+
+
+
+
         return false;
     }
 

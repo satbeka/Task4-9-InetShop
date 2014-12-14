@@ -43,7 +43,7 @@ public class Test {
         administrator.setId(newAdministratorId);
 
         // Find a customer object. Get the Transfer Object.
-        Administrator administrator22 = administratorDAO.findAdministratorByName("admin");
+        Administrator administrator22 = administratorDAO.findFirstAdministratorByName("admin");
 
         // modify the values in the Transfer Object.
 
