@@ -27,7 +27,7 @@ public abstract class User {
         this.insertDate = insertDate;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

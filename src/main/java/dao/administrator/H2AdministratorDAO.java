@@ -175,7 +175,39 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
     @Override
     public Administrator findAdministratorById(long id) {
+
+        Administrator administrator=new Administrator();
+        Connection cn=this.connection;
+
+        PreparedStatement st = null;
+        try {
+            st = cn.prepareStatement("select * from user where id =?;");
+            st.setLong(1,id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ResultSet rs = null;
+        try {
+            rs=st.executeQuery();
+            rs.next();
+            administrator.setId(rs.getLong(1));
+            administrator.setName(rs.getString(2));
+            administrator.setLogin(rs.getString(5));
+            administrator.setInn(rs.getString(7));
+            administrator.setBirthDay(rs.getDate(8));
+
+            return administrator;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         return null;
+
+
+
     }
 
     @Override
