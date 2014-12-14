@@ -35,7 +35,7 @@ public class Test {
         administrator.setPassword("admin");
         administrator.setInn("1111111111");
         Date sysDate = new Date();
-        administrator.setInsertDate(sysDate);
+        administrator.setInsertDate((java.sql.Date) sysDate);
 
         long newAdministratorId = administratorDAO.insertAdministrator(administrator);
         administrator.setId(newAdministratorId);

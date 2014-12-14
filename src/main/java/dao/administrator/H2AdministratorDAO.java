@@ -107,10 +107,9 @@ public class H2AdministratorDAO implements AdministratorDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        java.util.Date sysdate=new java.util.Date();
         try {
 
-            st2.setDate(9, (Date) sysdate);//insert_date
+            st2.setDate(9, administrator.getInsertDate());//insert_date
         } catch (SQLException e) {
             e.printStackTrace();
         }
