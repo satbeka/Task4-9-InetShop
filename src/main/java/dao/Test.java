@@ -5,10 +5,11 @@ import dao.administrator.AdministratorDAO;
 import dao.factory.DAOFactory;
 import model.Administrator;
 
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+//import java.util.Date;
 
 
 public class Test {
@@ -34,8 +35,9 @@ public class Test {
         administrator.setLogin("admin");
         administrator.setPassword("admin");
         administrator.setInn("1111111111");
-        Date sysDate = new Date();
-        administrator.setInsertDate((java.sql.Date) sysDate);
+        java.util.Date sysDate=new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(sysDate.getTime());
+        administrator.setInsertDate(sqlDate);
 
         long newAdministratorId = administratorDAO.insertAdministrator(administrator);
         administrator.setId(newAdministratorId);
@@ -45,14 +47,22 @@ public class Test {
 
         // modify the values in the Transfer Object.
 
-        //String string = "01.01.1980";
+        String string = "01.01.1980";
+        java.util.Date birthDay=null;
         SimpleDateFormat format = new SimpleDateFormat("dd.mm.yyyy");
         try {
-            Date birthDay= format.parse("01.01.1980");
-            administrator22.setBirthDay((java.sql.Date) birthDay);
+            birthDay=format.parse(string);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //birthDay=birthDay
+            //Date birthDay= (Date) format.parse("01.01.1980");
+
+        System.out.println(birthDay.toString());
+        Date sqlBirthDay=new Date(birthDay.getTime());
+        administrator22.setBirthDay(sqlBirthDay);
+
+
         administrator22.setLogin("admin22");
 
         // update the customer object using the DAO

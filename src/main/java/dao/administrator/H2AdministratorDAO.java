@@ -116,14 +116,8 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
         rs = null;
         try {
-            rs = st2.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            rs.next();
-            id=rs.getLong("ID");
+            int countRows = st2.executeUpdate();
+            if (countRows==0){id=-1;}
         } catch (SQLException e) {
             e.printStackTrace();
         }
