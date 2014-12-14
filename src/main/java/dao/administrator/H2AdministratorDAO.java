@@ -1,11 +1,13 @@
 package dao.administrator;
 
 import model.Administrator;
+import model.User;
 
 import javax.sql.RowSet;
 import java.sql.*;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.*;
 
 
 public class H2AdministratorDAO implements AdministratorDAO {
@@ -21,8 +23,8 @@ public class H2AdministratorDAO implements AdministratorDAO {
     public long insertAdministrator(Administrator administrator) {
 
         String SqlSeqID="select seq_id.nextval from dual;";
-        String SqlInsert1="insert into USER(id,name,role,address,login,password,inn," +
-                "birth_day,blacklist,insert_date) values ";
+        String SqlInsert2="insert into USER(id,name,role,address,login,password,inn," +
+                "birth_day,insert_date) values (?,?,?,?,?,?,?,?,?)";
 
         Connection cn=this.connection;
         try {
@@ -49,39 +51,84 @@ public class H2AdministratorDAO implements AdministratorDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String SqlInsert2="("+id;
 
+        PreparedStatement st2=null;
+        try {
+            st2=cn.prepareStatement(SqlInsert2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            st2.setLong(1,id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        try {
+            st2.setString(2, administrator.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st2.setInt(3, 1);  //Administrator role=1
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         long addressId= 0;
         try {
             addressId=administrator.getAddress().getId();
         } catch (Exception e) {
             addressId=0;
         }
-
-
-        SqlInsert2=SqlInsert2+","+administrator.getName()+","+addressId
-                +","+administrator.getLogin()+","+administrator.getPassword()+","+administrator.getInn();
-        String dt;
         try {
-            dt="TO_DATE("+administrator.getBirthDay().toString()+",'yyyy-MM-dd HH:mm:ss')";
-        } catch (Exception e) {
-            dt=null;
-        }
-
-
-        SqlInsert2=SqlInsert2+","+dt+","+"0";
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dt = sdfDate.format(administrator.getInsertDate());
-        dt="parsedatetime("+dt+",'yyyy-MM-dd HH:mm:ss')";
-        SqlInsert2=SqlInsert2+","+dt+");";
-        SqlInsert1=SqlInsert1+SqlInsert2;
-
-        int rows = 0;
-        try {
-            rows = st.executeUpdate(SqlInsert1);
+            st2.setLong(4,addressId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            st2.setString(5, administrator.getLogin());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st2.setString(6, administrator.getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st2.setString(7, administrator.getInn());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            st2.setDate(8, administrator.getBirthDay());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        java.util.Date sysdate=new java.util.Date();
+        try {
+
+            st2.setDate(9, (Date) sysdate);//insert_date
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        rs = null;
+        try {
+            rs = st2.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            rs.next();
+            id=rs.getLong("ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         try {
             cn.commit();
             return id;

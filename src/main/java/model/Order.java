@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 public class Order implements Serializable {
-    private long id;
+    private Long id;
     private String number;
     private int quantity;
     private Product product;

@@ -1,13 +1,13 @@
 package model;
 
-//import java.sql.Date;
-import java.util.Date;
+import java.sql.Date;
+//import java.util.Date;
 import java.util.Enumeration;
 
 
 public abstract class User {
 
-    private long id;
+    private Long id;
     private String name;
     public enum Role { ADMINISTRATOR, CLIENT, ALIEN };
     private Address address;
@@ -31,7 +31,7 @@ public abstract class User {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

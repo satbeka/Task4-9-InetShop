@@ -2,9 +2,9 @@ package model;
 
 
 public class Address {
-    private long id;
+    private Long id;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

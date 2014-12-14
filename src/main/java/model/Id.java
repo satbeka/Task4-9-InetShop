@@ -10,7 +10,7 @@ public class Id {
     //private Long id;
     public static long nextId(String tblName){
         String firstId="70";
-        long id;
+        Long id;
         switch (tblName){
             case "PRODUCT":firstId="10";
                 break;
