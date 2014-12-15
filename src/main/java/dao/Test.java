@@ -68,8 +68,7 @@ public class Test {
         // update the customer object using the DAO
         administratorDAO.updateAdministrator(administrator22);
 
-        h2Factory
-
+        
 
         /*
         // delete a customer object
