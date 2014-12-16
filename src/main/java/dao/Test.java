@@ -68,7 +68,7 @@ public class Test {
         // update the customer object using the DAO
         administratorDAO.updateAdministrator(administrator22);
 
-        
+
 
         /*
         // delete a customer object

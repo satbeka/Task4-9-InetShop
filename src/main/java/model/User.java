@@ -16,6 +16,16 @@ public abstract class User {
     private String inn;
     private Date birthDay;
     private Date insertDate;
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    private Integer deleted;
     //int blacklist;
 
 

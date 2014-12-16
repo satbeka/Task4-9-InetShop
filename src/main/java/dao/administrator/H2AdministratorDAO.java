@@ -140,6 +140,18 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
     @Override
     public boolean deleteAdministrator(Administrator administrator) {
+        Connection cn=this.connection;
+        PreparedStatement st=null;
+        String SqlUpd="update USER set deleted=1 where id=?";
+        try {
+            st=cn.prepareStatement(SqlUpd);
+            st.setLong(1,administrator.getId());
+            administrator.setDeleted(1);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
@@ -150,7 +162,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
         PreparedStatement st = null;
         try {
-            st = cn.prepareStatement("select * from user where name =?;");
+            st = cn.prepareStatement("select * from user where name =? and deleted!=1;");
             st.setString(1,name);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -183,7 +195,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
         PreparedStatement st = null;
         try {
-            st = cn.prepareStatement("select * from user where id =?;");
+            st = cn.prepareStatement("select * from user where id =? and deleted!=1;");
             st.setLong(1, id);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -217,7 +229,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
         //String SqlSeqID="select seq_id.nextval from dual;";
         String SqlUpd="update USER set name=?,address=?,login=?,password=?" +
-                ",inn=?,birth_day=? where Id=?";
+                ",inn=?,birth_day=? where Id=? and deleted!=1";
 
         Connection cn=this.connection;
         try {
