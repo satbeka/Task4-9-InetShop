@@ -1,19 +1,36 @@
 package dBase;
 
 
+import dao.ConnectionException;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
+
+import java.util.Queue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class ConnectionPool implements Connection{
 
-    private ConnectionPool(){}
-    private static class ConnectionPollHolder{
-        private final static ConnectionPool instance=new ConnectionPool();
-    }
-    public static ConnectionPool getInstance(){
-     return ConnectionPollHolder.instance;
+    public static final int POOL_SIZE = 10;
+    private PriorityBlockingQueue<Connection> connectionQueue;
+
+
+    private ConnectionPool(){
+        connectionQueue
+                = new PriorityBlockingQueue<Connection>(POOL_SIZE);
+        for (int i = 0; i < POOL_SIZE; i++) {
+            Connection connection
+                    = null;
+            try {
+                connection = ConnectorDb.getConnection();
+            } catch (SQLException exc) {
+                System.out.println("exc="+exc.toString());
+            }
+            connectionQueue.offer (connection);
+        }
+
     }
 
     @Override
@@ -285,6 +302,60 @@ public class ConnectionPool implements Connection{
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return false;
     }
+
+    private static class ConnectionPoolHolder{
+        private static ConnectionPool instance=new ConnectionPool();
+    }
+
+    public static ConnectionPool getInstance(){
+     return ConnectionPoolHolder.instance;
+    }
+
+    public Connection takeConnection () {
+        Connection connection = null;
+        try {
+            connection = connectionQueue.take();
+        } catch (InterruptedException e) {/*TODO log*/
+            System.out.println("e=" + e.toString());
+        }
+        return connection;
+    }
+
+    private void clearConnectionQueue () throws SQLException {
+        Connection connection;
+        while ((connection = connectionQueue.poll ()) != null) {
+            if (!connection.getAutoCommit ()) {
+                connection.commit ();
+            }
+            connection.close ();
+        }
+    }
+
+    public void releaseConnection (Connection connection) {
+        try {
+            if (!connection.isClosed ()) {
+                if (!connectionQueue.offer (connection)) {
+
+                }
+            }
+        } catch (SQLException e) {
+
+        }
+    }
+
+
+    public static void dispose () throws SQLException {
+        if (ConnectionPoolHolder.instance != null) {
+            ConnectionPoolHolder.instance.clearConnectionQueue ();
+            ConnectionPoolHolder.instance = null;
+
+        }
+    }
+
+
+
+
+
 
     /* pool to 5connection
     * */
