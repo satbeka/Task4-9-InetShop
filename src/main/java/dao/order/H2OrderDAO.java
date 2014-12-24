@@ -10,9 +10,7 @@ import java.util.List;
 public class H2OrderDAO implements OrderDAO {
     private Connection connection = null;
     // initialization
-    public H2OrderDAO(Connection connection) {
-        this.connection = connection;
-    }
+    public H2OrderDAO(){}
 
     @Override
     public int insertOrder(Order order) {

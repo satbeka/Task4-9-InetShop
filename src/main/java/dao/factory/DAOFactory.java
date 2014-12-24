@@ -23,7 +23,7 @@ public abstract class DAOFactory {
     // implement these methods.
     //public abstract AdministratorDAO getAdministratorDAO() throws ConnectionException;
 
-    public abstract AdministratorDAO getAdministratorDAO(ConnectionPool connectionPool) throws ConnectionException;
+    //public abstract AdministratorDAO getAdministratorDAO(ConnectionPool connectionPool) throws ConnectionException;
 
     //public abstract ClientDAO getClientDAO() throws ConnectionException;
 
@@ -50,9 +50,11 @@ public abstract class DAOFactory {
         }
     }
 
-    public abstract OrderDAO getOrderDAO(ConnectionPool connectionPool) throws ConnectionException;
+    public abstract AdministratorDAO getAdministratorDAO();
 
-    public abstract ProductDAO getProductDAO(ConnectionPool connectionPool)throws ConnectionException;
+    public abstract OrderDAO getOrderDAO();
 
-    public abstract AddressDAO getAddressDAO(ConnectionPool connectionPool)throws ConnectionException;
+    public abstract ProductDAO getProductDAO();
+
+    public abstract AddressDAO getAddressDAO();
 }

@@ -1,5 +1,6 @@
 package dao.administrator;
 
+import dBase.ConnectionPool;
 import model.Administrator;
 import model.User;
 
@@ -11,13 +12,24 @@ import java.util.*;
 
 
 public class H2AdministratorDAO implements AdministratorDAO {
+
     private Connection connection = null;
 
     // initialization
-    public H2AdministratorDAO(Connection connection) {
-        this.connection = connection;
+    public H2AdministratorDAO() {
     }
 
+    public Connection createConnection(ConnectionPool connectionPool) {
+        if (this.connection==null){
+            this.connection=connectionPool.takeConnection();};
+        return this.connection;
+    }
+
+    public void closeConnection(ConnectionPool connectionPool) {
+        if (this.connection!=null){
+            connectionPool.releaseConnection(this.connection);};
+        return;
+    }
 
     @Override
     public Administrator findAdministratorByName(String name) {
@@ -32,6 +44,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
                 "birth_day,insert_date) values (?,?,?,?,?,?,?,?,?)";
 
         Connection cn=this.connection;
+        //Connection cn=
         try {
             cn.setAutoCommit(false);
         } catch (SQLException e) {

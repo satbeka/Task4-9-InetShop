@@ -3,9 +3,12 @@ package dao;
 
 import dBase.ConnectionPool;
 import dao.administrator.AdministratorDAO;
+import dao.administrator.H2AdministratorDAO;
 import dao.factory.DAOFactory;
+import dao.factory.H2DAOFactory;
 import model.Administrator;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,14 +23,18 @@ public class Test {
 
         ConnectionPool inst=ConnectionPool.getInstance();
 
-        DAOFactory h2Factory =
-                DAOFactory.getDAOFactory(DAOFactory.H2);
+        DAOFactory factory =  DAOFactory.getDAOFactory(DAOFactory.H2);
+        H2DAOFactory h2DAOFactory=(H2DAOFactory)factory;
 
         // Create a DAO
         AdministratorDAO administratorDAO = null;
+        H2AdministratorDAO h2AdministratorDAO=null;
 
         try {
-            administratorDAO = h2Factory.getAdministratorDAO(inst);
+            administratorDAO = factory.getAdministratorDAO();
+            h2AdministratorDAO=(H2AdministratorDAO)administratorDAO;
+            Connection connection=h2AdministratorDAO.createConnection(inst);
+
         } catch (ConnectionException e) {
             e.printStackTrace();
         }
@@ -43,10 +50,13 @@ public class Test {
         administrator.setInsertDate(sqlDate);
 
         long newAdministratorId = administratorDAO.insertAdministrator(administrator);
-        administrator.setId(newAdministratorId);
+        h2AdministratorDAO.closeConnection(inst);
 
+        administrator.setId(newAdministratorId);
         // Find a customer object. Get the Transfer Object.
+        h2AdministratorDAO.createConnection(inst);
         Administrator administrator22 = administratorDAO.findFirstAdministratorByName("admin");
+        h2AdministratorDAO.closeConnection(inst);
 
         // modify the values in the Transfer Object.
 
@@ -69,7 +79,9 @@ public class Test {
         administrator22.setLogin("admin22");
 
         // update the customer object using the DAO
+        h2AdministratorDAO.createConnection(inst);
         administratorDAO.updateAdministrator(administrator22);
+        h2AdministratorDAO.closeConnection(inst);
 
 
 

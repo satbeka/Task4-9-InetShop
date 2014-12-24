@@ -17,7 +17,15 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class H2DAOFactory extends DAOFactory {
-    //private static ConnectionPool pool = null;
+    public ConnectionPool getPool() {
+        return pool;
+    }
+
+    public void setPool(ConnectionPool pool) {
+        this.pool = pool;
+    }
+
+    private ConnectionPool pool = null;
     //private static Connection connection;
 
     /*
@@ -29,38 +37,29 @@ public class H2DAOFactory extends DAOFactory {
     }
     */
 
-    public static Connection createConnection(ConnectionPool connectionPool) {
-        return connectionPool.takeConnection();
+
+    @Override
+    public AdministratorDAO getAdministratorDAO() {
+
+        return new H2AdministratorDAO();
+    }
+
+    public ClientDAO getClientDAO() {
+        return new H2ClientDAO();
     }
 
     @Override
-    public AdministratorDAO getAdministratorDAO(ConnectionPool connectionPool) throws ConnectionException {
-
-        Connection con = createConnection(connectionPool);
-        return new H2AdministratorDAO(con);
-        //return null;
-    }
-
-    public ClientDAO getClientDAO(ConnectionPool connectionPool) throws ConnectionException {
-        Connection con = createConnection(connectionPool);
-        return new H2ClientDAO(con);
+    public OrderDAO getOrderDAO(){
+        return new H2OrderDAO();
     }
 
     @Override
-    public OrderDAO getOrderDAO(ConnectionPool connectionPool) throws ConnectionException {
-        Connection con = createConnection(connectionPool);
-        return new H2OrderDAO(con);
+    public ProductDAO getProductDAO() {
+        return new H2ProductDAO();
     }
 
     @Override
-    public ProductDAO getProductDAO(ConnectionPool connectionPool)throws ConnectionException {
-        Connection con = createConnection(connectionPool);
-        return new H2ProductDAO(con);
-    }
-
-    @Override
-    public AddressDAO getAddressDAO(ConnectionPool connectionPool)throws ConnectionException {
-        Connection con = createConnection(connectionPool);
+    public AddressDAO getAddressDAO() {
         return null;
     }
 

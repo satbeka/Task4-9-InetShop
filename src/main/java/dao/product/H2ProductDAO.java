@@ -11,8 +11,7 @@ public class H2ProductDAO implements ProductDAO{
 
     private Connection connection = null;
     // initialization
-    public H2ProductDAO(Connection connection) {
-        this.connection = connection;
+    public H2ProductDAO(){
     }
 
     @Override

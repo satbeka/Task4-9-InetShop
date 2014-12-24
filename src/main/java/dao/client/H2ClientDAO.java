@@ -11,9 +11,7 @@ public class H2ClientDAO implements ClientDAO {
 
     private Connection connection = null;
     // initialization
-    public H2ClientDAO(Connection connection) {
-        this.connection = connection;
-    }
+    public H2ClientDAO(){}
 
     @Override
     public int insertClient(Client client) {
