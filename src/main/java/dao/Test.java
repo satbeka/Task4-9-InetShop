@@ -1,6 +1,7 @@
 package dao;
 
 
+import dBase.ConnectionPool;
 import dao.administrator.AdministratorDAO;
 import dao.factory.DAOFactory;
 import model.Administrator;
@@ -17,14 +18,16 @@ public class Test {
     public static void main(String[] args) {
 
 
+        ConnectionPool inst=ConnectionPool.getInstance();
+
         DAOFactory h2Factory =
                 DAOFactory.getDAOFactory(DAOFactory.H2);
 
         // Create a DAO
-        AdministratorDAO administratorDAO =
-                null;
+        AdministratorDAO administratorDAO = null;
+
         try {
-            administratorDAO = h2Factory.getAdministratorDAO();
+            administratorDAO = h2Factory.getAdministratorDAO(inst);
         } catch (ConnectionException e) {
             e.printStackTrace();
         }

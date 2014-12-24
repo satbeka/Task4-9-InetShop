@@ -1,5 +1,7 @@
 package dao.factory;
 
+import dBase.ConnectionPool;
+import dao.ConnectionException;
 import dao.address.AddressDAO;
 import dao.administrator.AdministratorDAO;
 import dao.client.ClientDAO;
@@ -9,27 +11,22 @@ import dao.product.ProductDAO;
 
 public class SybaseDAOFactory extends DAOFactory {
     @Override
-    public AdministratorDAO getAdministratorDAO() {
+    public AdministratorDAO getAdministratorDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 
     @Override
-    public ClientDAO getClientDAO() {
+    public OrderDAO getOrderDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 
     @Override
-    public OrderDAO getOrderDAO() {
+    public ProductDAO getProductDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 
     @Override
-    public ProductDAO getProductDAO() {
-        return null;
-    }
-
-    @Override
-    public AddressDAO getAddressDAO() {
+    public AddressDAO getAddressDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 }

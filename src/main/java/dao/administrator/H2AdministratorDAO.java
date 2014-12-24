@@ -162,7 +162,7 @@ public class H2AdministratorDAO implements AdministratorDAO {
 
         PreparedStatement st = null;
         try {
-            st = cn.prepareStatement("select * from user where name =? and deleted!=1;");
+            st = cn.prepareStatement("select * from user where name =? and nvl(deleted,0)!=1;");
             st.setString(1,name);
         } catch (SQLException e) {
             e.printStackTrace();

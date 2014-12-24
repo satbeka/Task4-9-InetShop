@@ -2,6 +2,7 @@ package dBase;
 
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Locale;
@@ -16,6 +17,14 @@ public class ConnectorDb {
         String url = resource.getString("url");
         String user = resource.getString("user");
         String pass = resource.getString("password");
+/*
+        String driverName=resource.getString("driver");
+        try {
+            Class.forName (driverName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+*/
         Locale.setDefault(current);
         return DriverManager.getConnection(url, user, pass);
 

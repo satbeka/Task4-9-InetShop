@@ -1,37 +1,32 @@
 package dao.factory;
 
+import dBase.ConnectionPool;
+import dao.ConnectionException;
 import dao.address.AddressDAO;
 import dao.administrator.AdministratorDAO;
 import dao.client.ClientDAO;
 import dao.order.OrderDAO;
 import dao.product.ProductDAO;
 
-/**
- * Created by 1 on 11.12.2014.
- */
+
 public class OracleDAOFactory extends DAOFactory {
     @Override
-    public AdministratorDAO getAdministratorDAO() {
+    public AdministratorDAO getAdministratorDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 
     @Override
-    public ClientDAO getClientDAO() {
+    public OrderDAO getOrderDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 
     @Override
-    public OrderDAO getOrderDAO() {
+    public ProductDAO getProductDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 
     @Override
-    public ProductDAO getProductDAO() {
-        return null;
-    }
-
-    @Override
-    public AddressDAO getAddressDAO() {
+    public AddressDAO getAddressDAO(ConnectionPool connectionPool) throws ConnectionException {
         return null;
     }
 }

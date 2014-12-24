@@ -1,5 +1,6 @@
 package dao.factory;
 
+import dBase.ConnectionPool;
 import dao.ConnectionException;
 import dao.address.AddressDAO;
 import dao.administrator.AdministratorDAO;
@@ -20,15 +21,17 @@ public abstract class DAOFactory {
     // There will be a method for each DAO that can be
     // created. The concrete factories will have to
     // implement these methods.
-    public abstract AdministratorDAO getAdministratorDAO() throws ConnectionException;
+    //public abstract AdministratorDAO getAdministratorDAO() throws ConnectionException;
 
-    public abstract ClientDAO getClientDAO() throws ConnectionException;
+    public abstract AdministratorDAO getAdministratorDAO(ConnectionPool connectionPool) throws ConnectionException;
 
-    public abstract OrderDAO getOrderDAO() throws ConnectionException;
+    //public abstract ClientDAO getClientDAO() throws ConnectionException;
 
-    public abstract ProductDAO getProductDAO() throws ConnectionException;
+    //public abstract OrderDAO getOrderDAO() throws ConnectionException;
 
-    public abstract AddressDAO getAddressDAO() throws ConnectionException;
+    //public abstract ProductDAO getProductDAO() throws ConnectionException;
+
+    //public abstract AddressDAO getAddressDAO() throws ConnectionException;
 
 
     public static DAOFactory getDAOFactory(
@@ -46,4 +49,10 @@ public abstract class DAOFactory {
                 return null;
         }
     }
+
+    public abstract OrderDAO getOrderDAO(ConnectionPool connectionPool) throws ConnectionException;
+
+    public abstract ProductDAO getProductDAO(ConnectionPool connectionPool)throws ConnectionException;
+
+    public abstract AddressDAO getAddressDAO(ConnectionPool connectionPool)throws ConnectionException;
 }

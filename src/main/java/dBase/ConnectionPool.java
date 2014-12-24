@@ -4,31 +4,48 @@ package dBase;
 import dao.ConnectionException;
 
 import java.sql.*;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
-import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
-import java.util.concurrent.PriorityBlockingQueue;
+//import java.util.concurrent.PriorityBlockingQueue;
+
 
 public class ConnectionPool implements Connection{
 
     public static final int POOL_SIZE = 10;
-    private PriorityBlockingQueue<Connection> connectionQueue;
+    private BlockingQueue<Connection> connectionQueue;
 
 
     private ConnectionPool(){
+
+        /*
+//------------
+        Locale locale=Locale.ENGLISH;
+        Locale current = Locale.getDefault();
+        Locale.setDefault(locale);
+        ResourceBundle resource = ResourceBundle.getBundle("dbh2");
+        String url = resource.getString("url");
+        String user = resource.getString("user");
+        String pass = resource.getString("password");
+        String driverName=resource.getString("driver");
+        Locale.setDefault(current);
+*/
+//----------
         connectionQueue
-                = new PriorityBlockingQueue<Connection>(POOL_SIZE);
+                = new ArrayBlockingQueue<Connection>(POOL_SIZE);
         for (int i = 0; i < POOL_SIZE; i++) {
-            Connection connection
-                    = null;
+
+            Connection connection = null;
             try {
+                //connection = DriverManager.getConnection(url, user, pass);//ConnectorDb.getConnection();
                 connection = ConnectorDb.getConnection();
-            } catch (SQLException exc) {
-                System.out.println("exc="+exc.toString());
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
             connectionQueue.offer (connection);
+
         }
 
     }
@@ -308,7 +325,8 @@ public class ConnectionPool implements Connection{
     }
 
     public static ConnectionPool getInstance(){
-     return ConnectionPoolHolder.instance;
+        ConnectionPoolHolder connectionPoolHolder=new ConnectionPoolHolder();
+     return connectionPoolHolder.instance;
     }
 
     public Connection takeConnection () {
@@ -346,7 +364,7 @@ public class ConnectionPool implements Connection{
 
     public static void dispose () throws SQLException {
         if (ConnectionPoolHolder.instance != null) {
-            ConnectionPoolHolder.instance.clearConnectionQueue ();
+            ConnectionPoolHolder.instance.clearConnectionQueue();
             ConnectionPoolHolder.instance = null;
 
         }

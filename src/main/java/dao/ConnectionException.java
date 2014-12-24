@@ -1,7 +1,9 @@
 package dao;
 
 
-public class ConnectionException extends Exception {
+import java.sql.SQLException;
+
+public class ConnectionException extends RuntimeException {
     public ConnectionException() {
         super();
     }
